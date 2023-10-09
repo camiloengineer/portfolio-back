@@ -26,6 +26,7 @@
 .vscode/
 # JetBrains
 .idea/
+tmp
 
 # Sistema Operativo
 # OSX
