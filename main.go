@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/camiloengineer/portfolio-back/db"
+	"github.com/camiloengineer/portfolio-back/models"
 	"github.com/camiloengineer/portfolio-back/routes"
 	"github.com/gorilla/mux"
 )
@@ -11,6 +12,11 @@ import (
 func main() {
 
 	db.DBConnection()
+
+	db.DB.AutoMigrate(models.Category{})
+	db.DB.AutoMigrate(models.Project{})
+	db.DB.AutoMigrate(models.ProjectCategories{})
+	db.DB.AutoMigrate(models.ProjectTranslation{})
 
 	r := mux.NewRouter()
 

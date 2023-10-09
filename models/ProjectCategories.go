@@ -5,6 +5,10 @@ import "gorm.io/gorm"
 type ProjectCategories struct {
 	gorm.Model
 
-	Url   string
-	Image string
+	ProjectID  uint `gorm:"not null"`
+	CategoryID uint `gorm:"not null"`
+
+	// Relaciones
+	Project  Project
+	Category Category
 }
