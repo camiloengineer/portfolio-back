@@ -30,6 +30,43 @@ Este proyecto contiene el backend de mi [portafolio profesional](https://www.cam
    go run .
    ```
 
+### Modelo de Datos
+
+
+1. **Project**
+
+| Column       | Type     | Description                            |
+|--------------|----------|----------------------------------------|
+| id           | SERIAL   | Unique identifier for the project      |
+| url          | TEXT     | URL related to the project             |
+| image        | TEXT     | Reference to the project image         |
+
+
+2. **ProjectTranslations**
+
+| Column       | Type     | Description                             |
+|--------------|----------|-----------------------------------------|
+| id           | SERIAL   | Unique identifier for the translation   |
+| project_id   | INT      | Foreign key to `Projects` table         |
+| language     | TEXT     | Language code (e.g., 'en', 'es')        |
+| title        | TEXT     | Translated title of the project         |
+| description  | TEXT     | Translated description of the project   |
+| button_text  | TEXT     | Translated button text                  |
+
+3. **Categories**
+
+| Column       | Type     | Description                            |
+|--------------|----------|----------------------------------------|
+| id           | SERIAL   | Unique identifier for the category     |
+| name         | TEXT     | Name of the category                   |
+
+4. **ProjectCategories**
+
+| Column       | Type     | Description                            |
+|--------------|----------|----------------------------------------|
+| project_id   | INT      | Foreign key to `Projects` table        |
+| category_id  | INT      | Foreign key to `Categories` table      |
+
 ## ✒️ Autor
 
 * **Camilo González** 
