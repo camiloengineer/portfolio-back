@@ -1,6 +1,6 @@
-# Backend del Portafolio de [Tu Nombre]
+# Backend de Portafolio
 
-Este proyecto contiene el backend de mi (portafolio profesional)[https://www.camiloengineer.com/], implementado utilizando Go. 
+Este proyecto contiene el backend de mi [portafolio profesional](https://www.camiloengineer.com/), implementado utilizando Go. 
 
 ## Tecnologías Utilizadas
 
