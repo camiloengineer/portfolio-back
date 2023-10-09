@@ -1,0 +1,43 @@
+# Binarios para programas y plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Archivos generados por la construcción
+*.out
+
+# Dependencias
+/vendor/
+
+# Directorio que almacena archivos de build
+/bin/
+
+# Archivos de configuración
+/config.toml
+/config.yaml
+
+# IDEs
+# VSCode
+.vscode/
+# JetBrains
+.idea/
+
+# Sistema Operativo
+# OSX
+.DS_Store
+# Windows
+Thumbs.db
+# Linux
+*.swp
+
+# Log files
+*.log
+
+# Certificates
+*.crt
+*.key

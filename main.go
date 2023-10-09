@@ -1,9 +1,16 @@
 package main
 
 import (
-	"fmt"
+	"net/http"
+
+	"github.com/camiloengineer/portfolio-back/routes"
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	fmt.Println("¡Hola Mundo!")
+	r := mux.NewRouter()
+
+	r.HandleFunc("/", routes.HomeHandler)
+
+	http.ListenAndServe(":3000", r)
 }
