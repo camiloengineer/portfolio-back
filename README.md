@@ -35,11 +35,12 @@ Este proyecto contiene el backend de mi [portafolio profesional](https://www.cam
 
 1. **Project**
 
-| Column       | Type     | Description                            |
-|--------------|----------|----------------------------------------|
-| id           | SERIAL   | Unique identifier for the project      |
-| url          | TEXT     | URL related to the project             |
-| image        | TEXT     | Reference to the project image         |
+| Column          | Type     | Description                            |
+|-----------------|----------|----------------------------------------|
+| id              | SERIAL   | Unique identifier for the project      |
+| url             | TEXT     | URL related to the project             |
+| image           | TEXT     | Reference to the project image         |
+| is_professional | TEXT     | Reference to the project image         |
 
 
 2. **ProjectTranslations**
@@ -66,6 +67,43 @@ Este proyecto contiene el backend de mi [portafolio profesional](https://www.cam
 |--------------|----------|----------------------------------------|
 | project_id   | INT      | Foreign key to `Projects` table        |
 | category_id  | INT      | Foreign key to `Categories` table      |
+
+
+### Example Data
+
+
+1. **Project**
+
+| id | url                  | image    | is_professional |
+|----|----------------------|----------|-----------------|
+| 1  | https://example.com  | image1   | false           |
+| 2  | https://example2.com | image2   | true            |
+
+
+
+2. **ProjectTranslations**
+
+| id | project_id | language | title    | description                 | button_text |
+|----|------------|----------|----------|-----------------------------|-------------|
+| 1  | 1          | en       | Example  | This is an example project. | View Demo   |
+| 2  | 1          | es       | Ejemplo  | Este es un proyecto ejemplo.| Ver Demo    |
+
+3. **Categories**
+
+| id | name       |
+|----|------------|
+| 1  | Web        |
+| 2  | Design     |
+
+4. **ProjectCategories**
+
+| project_id | category_id |
+|------------|-------------|
+| 1          | 1           |
+| 1          | 2           |
+| 2          | 1           |
+
+
 
 ## ✒️ Autor
 

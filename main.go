@@ -22,5 +22,8 @@ func main() {
 
 	r.HandleFunc("/", routes.HomeHandler)
 
+	r.HandleFunc("/practiceprj", routes.GetPracticePrjHandler).Methods("GET")
+	r.HandleFunc("/professionalprj", routes.GetProfessionalPrjHandler).Methods("GET")
+
 	http.ListenAndServe(":3000", r)
 }
