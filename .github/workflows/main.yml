@@ -20,6 +20,9 @@ jobs:
     - name: Install dependencies
       run: go mod download
     
+    - name: Authenticate with Google Cloud
+      run: echo "${{ secrets.GCP_SA_KEY }}" | gcloud auth activate-service-account --key-file=-
+    
     - name: Deploy to App Engine
       uses: google-github-actions/deploy-appengine@v0.2.0
       with:
