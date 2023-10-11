@@ -9,7 +9,6 @@ type ProjectTranslation struct {
 	Language    string `gorm:"size:2;not null;index"`
 	Title       string `gorm:"size:255;not null"`
 	Description string `gorm:"type:text;not null"`
-	ButtonText  string `gorm:"size:255;not null"`
 
 	// Relación
 	Project Project

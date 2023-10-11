@@ -52,7 +52,6 @@ Este proyecto contiene el backend de mi [portafolio profesional](https://www.cam
 | language     | TEXT     | Language code (e.g., 'en', 'es')        |
 | title        | TEXT     | Translated title of the project         |
 | description  | TEXT     | Translated description of the project   |
-| button_text  | TEXT     | Translated button text                  |
 
 3. **Categories**
 
@@ -83,10 +82,10 @@ Este proyecto contiene el backend de mi [portafolio profesional](https://www.cam
 
 2. **ProjectTranslations**
 
-| id | project_id | language | title    | description                 | button_text |
-|----|------------|----------|----------|-----------------------------|-------------|
-| 1  | 1          | en       | Example  | This is an example project. | View Demo   |
-| 2  | 1          | es       | Ejemplo  | Este es un proyecto ejemplo.| Ver Demo    |
+| id | project_id | language | title    | description                 |
+|----|------------|----------|----------|-----------------------------|
+| 1  | 1          | en       | Example  | This is an example project. |
+| 2  | 1          | es       | Ejemplo  | Este es un proyecto ejemplo.|
 
 3. **Categories**
 

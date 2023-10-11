@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/camiloengineer/portfolio-back/db"
 	"github.com/camiloengineer/portfolio-back/models"
@@ -22,8 +23,13 @@ func main() {
 
 	r.HandleFunc("/", routes.HomeHandler)
 
-	r.HandleFunc("/practiceprj", routes.GetPracticePrjHandler).Methods("GET")
-	r.HandleFunc("/professionalprj", routes.GetProfessionalPrjHandler).Methods("GET")
+	r.HandleFunc("/projects/innovation/{lang:[a-z]{2}}", routes.GetInnovationPrjHandler).Methods("GET")
+	r.HandleFunc("/projects/professional/{lang:[a-z]{2}}", routes.GetProfessionalPrjHandler).Methods("GET")
 
-	http.ListenAndServe(":3000", r)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	http.ListenAndServe(":"+port, r)
+
 }
