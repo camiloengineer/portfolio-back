@@ -27,4 +27,4 @@ jobs:
         deliverables: app.yaml
         version: v1
         project_id: ${{ secrets.GCP_PROJECT }}
-        credentials: ${{ secrets.GCP_CREDENTIALS }}
+        credentials: ${{ secrets.GCP_SA_KEY }}
