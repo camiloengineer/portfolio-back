@@ -1,5 +1,9 @@
 runtime: go120 
 
+env_variables:
+  APP_ENV: "production"
+  ID_PROJECT: "green-analog-374311"
+
 handlers:
 - url: /.*
   script: auto
