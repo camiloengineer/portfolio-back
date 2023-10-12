@@ -28,3 +28,8 @@ jobs:
         version: v1
         project_id: ${{ secrets.GCP_PROJECT }}
         credentials: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Get and Display Service URL
+      run: |
+        URL=$(gcloud app browse -s [YOUR_SERVICE_NAME] --no-launch-browser)
+        echo "Deployed service URL: $URL"

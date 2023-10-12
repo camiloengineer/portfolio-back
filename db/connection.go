@@ -23,22 +23,24 @@ func init() {
 }
 
 func getSecret(secretID string) (string, error) {
-	// projectID debe ser el ID de tu proyecto en GCP
 	projectID := os.Getenv("ID_PROJECT")
 	appEnv := os.Getenv("APP_ENV")
 
-	// Crea el contexto
+	log.Printf("Getting secret with ID: %s\n", secretID)
+	log.Printf("Project ID: %s\n", projectID)
+	log.Printf("App Environment: %s\n", appEnv)
+
 	ctx := context.Background()
 
 	var client *secretmanager.Client
 	var err error
 
 	if appEnv == "production" {
-		// En producción, usa la autenticación automática de App Engine
 		client, err = secretmanager.NewClient(ctx)
+		log.Println("Using production credentials for Secret Manager.")
 	} else {
-		// En desarrollo, usa un archivo de credenciales
 		client, err = secretmanager.NewClient(ctx, option.WithCredentialsFile("credentials.json"))
+		log.Println("Using local credentials for Secret Manager.")
 	}
 
 	if err != nil {
@@ -46,10 +48,10 @@ func getSecret(secretID string) (string, error) {
 	}
 	defer client.Close()
 
-	// Construye el nombre del recurso del secreto
 	name := fmt.Sprintf("projects/%s/secrets/%s/versions/latest", projectID, secretID)
 
-	// Solicita el secreto al Secret Manager API
+	log.Printf("Constructed secret name: %s\n", name)
+
 	result, err := client.AccessSecretVersion(ctx, &secretmanagerpb.AccessSecretVersionRequest{
 		Name: name,
 	})
@@ -57,39 +59,40 @@ func getSecret(secretID string) (string, error) {
 		return "", fmt.Errorf("failed to access secret version: %v", err)
 	}
 
-	// Devuelve el payload del secreto como string
 	return string(result.Payload.Data), nil
 }
 
 func DBConnection() {
-	// Obtén los secretos del Secret Manager
+	log.Println("Starting database connection...")
+
 	host, err := getSecret("DB_HOST")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error getting DB_HOST: %v", err)
 	}
 
 	user, err := getSecret("DB_USER")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error getting DB_USER: %v", err)
 	}
 
 	password, err := getSecret("DB_PASSWORD")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error getting DB_PASSWORD: %v", err)
 	}
 
 	dbName, err := getSecret("DB_NAME")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error getting DB_NAME: %v", err)
 	}
 
 	port, err := getSecret("DB_PORT")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Error getting DB_PORT: %v", err)
 	}
 
-	// Construye la cadena de conexión y conecta a la base de datos
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s", host, user, password, dbName, port)
+
+	log.Printf("Connecting to DB with DSN: %s\n", dsn) // Solo para debugging, no imprimas contraseñas en logs en entornos de producción.
 
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
