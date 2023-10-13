@@ -28,3 +28,14 @@ jobs:
         version: v1
         project_id: ${{ secrets.GCP_PROJECT }}
         credentials: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Check Endpoint
+      run: |
+        RESPONSE=$(curl --max-time 10 --write-out '%{http_code}' --silent --output /dev/null$ {{ secrets.APP_URL }})
+        
+        if [ $RESPONSE -eq 200 ]; then
+          echo "Endpoint is healthy!"
+        else
+          echo "Failed to connect to Endpoint! HTTP Status code: $RESPONSE"
+          exit 1
+        fi

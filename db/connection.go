@@ -92,8 +92,6 @@ func DBConnection() {
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s", host, user, password, dbName, port)
 
-	log.Printf("Connecting to DB with DSN: %s\n", dsn) // Solo para debugging, no imprimas contraseñas en logs en entornos de producción.
-
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
