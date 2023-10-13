@@ -23,7 +23,7 @@ func init() {
 }
 
 func getSecret(secretID string) (string, error) {
-	projectID := os.Getenv("ID_PROJECT")
+	projectID := os.Getenv("PROJECT_ID")
 	appEnv := os.Getenv("APP_ENV")
 
 	log.Printf("Getting secret with ID: %s\n", secretID)

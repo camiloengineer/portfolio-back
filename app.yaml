@@ -4,7 +4,7 @@ service_account: secret-manager-accessor@green-analog-374311.iam.gserviceaccount
 
 env_variables:
   APP_ENV: "production"
-  ID_PROJECT: "green-analog-374311"
+  PROJECT_ID: "green-analog-374311"
 
 handlers:
 - url: /.*

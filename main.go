@@ -25,6 +25,7 @@ func main() {
 
 	r.HandleFunc("/projects/innovation/{lang:[a-z]{2}}", routes.GetInnovationPrjHandler).Methods("GET")
 	r.HandleFunc("/projects/professional/{lang:[a-z]{2}}", routes.GetProfessionalPrjHandler).Methods("GET")
+	r.HandleFunc("/sendemail", routes.SendEmailHandler).Methods("POST")
 
 	port := os.Getenv("PORT")
 	if port == "" {
