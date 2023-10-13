@@ -4,22 +4,28 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 
 	"google.golang.org/api/option"
 	"gopkg.in/mail.v2"
 
 	"cloud.google.com/go/pubsub"
+	secretmanager "cloud.google.com/go/secretmanager/apiv1"
+	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	"github.com/joho/godotenv"
 )
 
 var (
-	projectID string
-	topicID   string
+	projectID      string
+	topicID        string
+	developerEmail string
 )
+var emailDialer *mail.Dialer
 
 func init() {
 	if err := godotenv.Load(); err != nil {
@@ -28,6 +34,48 @@ func init() {
 
 	projectID = os.Getenv("PROJECT_ID")
 	topicID = os.Getenv("TOPIC_ID")
+	developerEmail = os.Getenv("DEVELOPER_EMAIL")
+	initEmailDialer()
+}
+
+func getSecret(secretID string) (string, error) {
+	projectID := os.Getenv("PROJECT_ID")
+	appEnv := os.Getenv("APP_ENV")
+
+	log.Printf("Getting secret with ID: %s\n", secretID)
+	log.Printf("Project ID: %s\n", projectID)
+	log.Printf("App Environment: %s\n", appEnv)
+
+	ctx := context.Background()
+
+	var client *secretmanager.Client
+	var err error
+
+	if appEnv == "production" {
+		client, err = secretmanager.NewClient(ctx)
+		log.Println("Using production credentials for Secret Manager.")
+	} else {
+		client, err = secretmanager.NewClient(ctx, option.WithCredentialsFile("credentials.json"))
+		log.Println("Using local credentials for Secret Manager.")
+	}
+
+	if err != nil {
+		return "", fmt.Errorf("failed to create secretmanager client: %v", err)
+	}
+	defer client.Close()
+
+	name := fmt.Sprintf("projects/%s/secrets/%s/versions/latest", projectID, secretID)
+
+	log.Printf("Constructed secret name: %s\n", name)
+
+	result, err := client.AccessSecretVersion(ctx, &secretmanagerpb.AccessSecretVersionRequest{
+		Name: name,
+	})
+	if err != nil {
+		return "", fmt.Errorf("failed to access secret version: %v", err)
+	}
+
+	return string(result.Payload.Data), nil
 }
 
 func SendEmailHandler(w http.ResponseWriter, r *http.Request) {
@@ -95,16 +143,44 @@ func createBody(tmpl string, data interface{}) (string, error) {
 	return body.String(), nil
 }
 
+func initEmailDialer() {
+	host, err := getSecret("ADMIN_EMAIL_HOST")
+	if err != nil {
+		log.Fatalf("Error retrieving ADMIN_EMAIL_HOST: %v", err)
+	}
+
+	port, err := getSecret("ADMIN_EMAIL_PORT")
+	if err != nil {
+		log.Fatalf("Error retrieving ADMIN_EMAIL_PORT: %v", err)
+	}
+
+	user, err := getSecret("ADMIN_EMAIL_USER")
+	if err != nil {
+		log.Fatalf("Error retrieving ADMIN_EMAIL_USER: %v", err)
+	}
+
+	password, err := getSecret("ADMIN_EMAIL_PASSWORD")
+	if err != nil {
+		log.Fatalf("Error retrieving ADMIN_EMAIL_PASSWORD: %v", err)
+	}
+
+	// Convertir el puerto de string a int
+	intPort, err := strconv.Atoi(port)
+	if err != nil {
+		log.Fatalf("Error converting port to integer: %v", err)
+	}
+
+	emailDialer = mail.NewDialer(host, intPort, user, password)
+}
+
 func sendEmail(to string, subject string, body string) error {
 	m := mail.NewMessage()
-	m.SetHeader("From", "camilo@camiloengineer.com")
+	m.SetHeader("From", developerEmail)
 	m.SetHeader("To", to)
 	m.SetHeader("Subject", subject)
 	m.SetBody("text/html", body)
 
-	d := mail.NewDialer("smtp.gmail.com", 587, "camilo@camiloengineer.com", "iowlgzkfcokjoqpr")
-
-	return d.DialAndSend(m)
+	return emailDialer.DialAndSend(m)
 }
 
 func publishMessage(ctx context.Context, topicID string, msg []byte) error {
@@ -131,7 +207,7 @@ func publishMessage(ctx context.Context, topicID string, msg []byte) error {
 	return nil
 }
 
-func subscribeAndListenForMessages(ctx context.Context, subscriptionID string) error {
+func SubscribeAndListenForMessages(ctx context.Context, subscriptionID string) error {
 	client, err := createPubsubClient(ctx)
 	if err != nil {
 		return err
@@ -139,13 +215,17 @@ func subscribeAndListenForMessages(ctx context.Context, subscriptionID string) e
 	defer client.Close()
 
 	sub := client.Subscription(subscriptionID)
-	return sub.Receive(ctx, func(c context.Context, msg *pubsub.Message) { // Rename ctx to avoid shadowing
+	return sub.Receive(ctx, func(c context.Context, msg *pubsub.Message) {
+		log.Println("Message received, ID:", msg.ID) // Log cuando un mensaje es recibido
+
 		var emailMessage EmailMessage
 		if err := json.Unmarshal(msg.Data, &emailMessage); err != nil {
 			log.Printf("Could not decode message data: %v", err)
 			msg.Nack()
 			return
 		}
+
+		log.Printf("Decoded message data: %+v", emailMessage) // Log después de decodificar el mensaje
 
 		bodyDeveloper, err := createBody(developerEmailTemplate, emailMessage)
 		if err != nil {
@@ -159,6 +239,7 @@ func subscribeAndListenForMessages(ctx context.Context, subscriptionID string) e
 			msg.Nack()
 			return
 		}
+		log.Println("Email sent to developer") // Log cuando el email al desarrollador es enviado
 
 		bodyUser, err := createBody(userEmailTemplate, emailMessage)
 		if err != nil {
@@ -172,6 +253,7 @@ func subscribeAndListenForMessages(ctx context.Context, subscriptionID string) e
 			msg.Nack()
 			return
 		}
+		log.Println("Email sent to user") // Log cuando el email al usuario es enviado
 
 		msg.Ack()
 	})

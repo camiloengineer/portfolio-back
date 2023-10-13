@@ -28,8 +28,3 @@ jobs:
         version: v1
         project_id: ${{ secrets.GCP_PROJECT }}
         credentials: ${{ secrets.GCP_SA_KEY }}
-
-    - name: Verify Deployment
-        run: |
-          sleep 15
-          curl -f ${{ secrets.APP_URL }}

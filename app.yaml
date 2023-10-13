@@ -5,6 +5,8 @@ service_account: secret-manager-accessor@green-analog-374311.iam.gserviceaccount
 env_variables:
   APP_ENV: "production"
   PROJECT_ID: "green-analog-374311"
+  TOPIC_ID: "send-email-topic"
+  DEVELOPER_EMAIL: "camilo@camiloengineer.com"
 
 handlers:
 - url: /.*
