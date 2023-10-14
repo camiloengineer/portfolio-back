@@ -109,7 +109,7 @@ func SubscribeAndListenForMessages(ctx context.Context, subscriptionID string) e
 
 		log.Printf("Decoded message data: %+v", emailMessage)
 
-		developerBody := email.DeveloperBody
+		developerBody := DeveloperBody
 		bodyDeveloper, err := email.CreateBody(developerBody, emailMessage)
 		if err != nil {
 			log.Printf("Error creating developer email body: %v", err)
@@ -124,7 +124,7 @@ func SubscribeAndListenForMessages(ctx context.Context, subscriptionID string) e
 		}
 		log.Println("Email sent to developer")
 
-		userBody := email.DeveloperBody
+		userBody := UserBody
 		bodyUser, err := email.CreateBody(userBody, emailMessage)
 		if err != nil {
 			log.Printf("Error creating user email body: %v", err)

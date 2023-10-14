@@ -1,11 +1,11 @@
-package routes
+package api
 
 import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/camiloengineer/portfolio-back/db"
-	"github.com/camiloengineer/portfolio-back/models"
+	"github.com/camiloengineer/portfolio-back/internal/db"
+	"github.com/camiloengineer/portfolio-back/internal/models"
 	"github.com/gorilla/mux"
 )
 

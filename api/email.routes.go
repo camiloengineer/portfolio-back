@@ -1,6 +1,4 @@
-// routes/email.go
-
-package routes
+package api
 
 import (
 	"encoding/json"

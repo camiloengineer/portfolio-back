@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/camiloengineer/portfolio-back/db"
+	"github.com/camiloengineer/portfolio-back/api"
+	"github.com/camiloengineer/portfolio-back/internal/db"
 	"github.com/camiloengineer/portfolio-back/internal/email"
-	"github.com/camiloengineer/portfolio-back/models"
-	"github.com/camiloengineer/portfolio-back/routes"
+	"github.com/camiloengineer/portfolio-back/internal/models"
 	"github.com/gorilla/mux"
 )
 
@@ -24,10 +24,10 @@ func main() {
 
 	r := mux.NewRouter()
 
-	r.HandleFunc("/", routes.HomeHandler)
-	r.HandleFunc("/projects/innovation/{lang:[a-z]{2}}", routes.GetInnovationPrjHandler).Methods("GET")
-	r.HandleFunc("/projects/professional/{lang:[a-z]{2}}", routes.GetProfessionalPrjHandler).Methods("GET")
-	r.HandleFunc("/sendemail", routes.SendEmailHandler).Methods("POST")
+	r.HandleFunc("/", api.HomeHandler)
+	r.HandleFunc("/projects/innovation/{lang:[a-z]{2}}", api.GetInnovationPrjHandler).Methods("GET")
+	r.HandleFunc("/projects/professional/{lang:[a-z]{2}}", api.GetProfessionalPrjHandler).Methods("GET")
+	r.HandleFunc("/sendemail", api.SendEmailHandler).Methods("POST")
 
 	// Implementación del suscriptor en una goroutine.
 	topicID := os.Getenv("TOPIC_ID")
