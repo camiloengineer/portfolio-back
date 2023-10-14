@@ -10,6 +10,7 @@
 
 # Archivos generados por la construcción
 *.out
+.vscode
 
 # Dependencias
 /vendor/
