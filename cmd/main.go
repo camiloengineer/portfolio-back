@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/camiloengineer/portfolio-back/db"
+	"github.com/camiloengineer/portfolio-back/internal/email"
 	"github.com/camiloengineer/portfolio-back/models"
 	"github.com/camiloengineer/portfolio-back/routes"
 	"github.com/gorilla/mux"
@@ -37,7 +38,7 @@ func main() {
 	go func() {
 		ctx := context.Background()
 		subscriptionID := topicID + "-sub"
-		if err := routes.SubscribeAndListenForMessages(ctx, subscriptionID); err != nil {
+		if err := email.SubscribeAndListenForMessages(ctx, subscriptionID); err != nil {
 			log.Printf("Error starting subscriber: %v", err)
 		}
 	}()
