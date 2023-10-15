@@ -4,11 +4,10 @@ Este proyecto contiene el backend de mi [portafolio profesional](https://www.cam
 
 ## Tecnologías Utilizadas
 
-- **Lenguaje**: Go
-- **Frameworks y ORM**: Gorilla/mux, Gorm ORM, Air
-- **Base de Datos**: PostgreSQL
-- **Cloud**: GCP SDK, Cloud SQL
-- **Otras Tecnologías**: Docker
+- **Lenguaje**: Go.
+- **Frameworks y ORM**: Gorilla/mux, Gorm ORM, Air.
+- **Base de Datos**: PostgreSQL.
+- **Cloud**: GCP App Engine, Compute Engine, Secrets Manager, Pub/Sub.
 
 ## Cómo Ejecutar Localmente
 
