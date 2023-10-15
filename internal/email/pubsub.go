@@ -9,7 +9,7 @@ import (
 	"google.golang.org/api/option"
 	"gopkg.in/mail.v2"
 
-	"github.com/camiloengineer/portfolio-back/cmd/config"
+	config "github.com/camiloengineer/portfolio-back/cmd"
 	"github.com/camiloengineer/portfolio-back/pkg/email"
 )
 

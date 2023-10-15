@@ -8,7 +8,7 @@ import (
 
 	"gopkg.in/mail.v2"
 
-	"github.com/camiloengineer/portfolio-back/cmd/config"
+	config "github.com/camiloengineer/portfolio-back/cmd"
 )
 
 var emailDialer *mail.Dialer

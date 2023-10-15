@@ -14,14 +14,23 @@ import (
 )
 
 func main() {
+	// Realizar migraciones de base de datos
+	runMigrations()
 
+	// Iniciar la aplicación
+	startApp()
+}
+
+func runMigrations() {
 	db.DBConnection()
 
 	db.DB.AutoMigrate(models.Category{})
 	db.DB.AutoMigrate(models.Project{})
 	db.DB.AutoMigrate(models.ProjectCategories{})
 	db.DB.AutoMigrate(models.ProjectTranslation{})
+}
 
+func startApp() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", api.HomeHandler)

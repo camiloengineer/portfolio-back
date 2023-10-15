@@ -9,6 +9,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// @Summary Obtiene proyectos de innovación
+// @Description Obtiene una lista de proyectos de innovación en función del idioma.
+// @Tags Proyectos
+// @Accept json
+// @Produce json
+// @Param lang path string true "Código de idioma (por ejemplo, 'es', 'en')"
+// @Success 200 {array} ProjectResponse
+// @Router /projects/innovation/{lang} [get]
 func GetInnovationPrjHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -25,6 +33,14 @@ func GetInnovationPrjHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(result)
 }
 
+// @Summary Obtiene proyectos profesionales
+// @Description Obtiene una lista de proyectos profesionales en función del idioma.
+// @Tags Proyectos
+// @Accept json
+// @Produce json
+// @Param lang path string true "Código de idioma (por ejemplo, 'es', 'en')"
+// @Success 200 {array} ProjectResponse
+// @Router /projects/professional/{lang} [get]
 func GetProfessionalPrjHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
